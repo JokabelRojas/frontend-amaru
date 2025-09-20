@@ -21,7 +21,7 @@ export class Login {
   login() {
     this.authService.login(this.email, this.password).subscribe({
       next: () => {
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/panel']);
       },
       error: () =>{
         alert('Login failed');
