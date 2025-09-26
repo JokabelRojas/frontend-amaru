@@ -6,7 +6,13 @@
   top: 0;
   transition: all 0.5s ease;
   background: #f4f7fa;
-  padding: 3rem;
+}
+.body-pad {
+  padding: 2rem;
+  background: #f4f7fa;
+  min-height: calc(100vh - 6rem);
+  border-radius: 0.625rem;
+  box-shadow: 0.063rem 0.063rem 0.313rem 0 rgba(0, 0, 0, 0.1);
 }
 
 .body-trimmed {

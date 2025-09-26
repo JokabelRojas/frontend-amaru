@@ -1,10 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, input } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { Header } from '../../shared/components/header/header';
+import { HeaderAdmin } from '../../shared/components/header-admin/header-admin';
 
 @Component({
   selector: 'app-main',
-  imports: [RouterOutlet, CommonModule],
+  imports: [RouterOutlet, CommonModule, HeaderAdmin, Header],
   templateUrl: './main.html',
   styleUrl: './main.css'
 })
