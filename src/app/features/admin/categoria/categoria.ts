@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-categoria',
-  imports: [],
+  imports: [MatIconModule],
   templateUrl: './categoria.html',
   styleUrl: './categoria.css'
 })

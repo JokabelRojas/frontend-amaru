@@ -1,1 +1,28 @@
-<p>categoria works!</p>
+<header class="sticky top-0 z-40 bg-white shadow-lg rounded-b-2xl">
+  <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-5">
+    
+    <!-- Título con icono -->
+    <div class="flex items-center gap-3">
+      <mat-icon class="text-[#F7A428] text-4xl drop-shadow-sm">category</mat-icon>
+      <h1 class="text-3xl font-extrabold text-gray-800 tracking-wide">
+        Gestión de <span class="text-gray-600">Categorías</span> y 
+        <span class="text-gray-600">Subcategorías</span>
+      </h1>
+    </div>
+
+    <!-- Acciones -->
+    <div class="flex items-center gap-4">
+      <!-- Botón Categoría -->
+      <button mat-raised-button class="flex items-center gap-2 bg-[#F7A428] text-white font-semibold hover:bg-[#e69320] rounded-xl px-5 py-2.5 shadow-md transition-all duration-300">
+        <mat-icon class="text-white">add</mat-icon>
+        <span>Nueva Categoría</span>
+      </button>
+
+      <!-- Botón Subcategoría -->
+      <button mat-stroked-button class="flex items-center gap-2 border-2 border-[#F7A428] text-[#F7A428] hover:bg-[#FFF5E6] rounded-xl px-5 py-2.5 font-semibold shadow-sm transition-all duration-300">
+        <mat-icon class="text-[#F7A428]">add_circle_outline</mat-icon>
+        <span>Nueva Subcategoría</span>
+      </button>
+    </div>
+  </div>
+</header>
