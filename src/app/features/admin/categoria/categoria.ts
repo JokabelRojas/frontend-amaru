@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
+import { AdminDataService } from '../../../core/services/admin.data.service';
 
 @Component({
   selector: 'app-categoria',
@@ -9,42 +10,56 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrl: './categoria.css'
 })
 export class Categoria {
-activeTab: 'categorias' | 'subcategorias' = 'categorias';
+   activeTab: 'categorias' | 'subcategorias' = 'categorias';
 
-  categorias = [
-    {
-      id: 1,
-      nombre: 'Electrónica',
-      tipo: 'Principal',
-      descripcion: 'Dispositivos tecnológicos y gadgets.',
-      estado: 'Activo',
-      fechaCreacion: '2025-09-14',
-    },
-    {
-      id: 2,
-      nombre: 'Hogar',
-      tipo: 'Secundario',
-      descripcion: 'Artículos para el hogar y cocina.',
-      estado: 'Inactivo',
-      fechaCreacion: '2025-08-10',
-    },
-  ];
+  categorias: any[] = [];
+  subcategorias: any[] = [];
 
-  subcategorias = [
-    {
-      id: 1,
-      categoria: 'Electrónica',
-      descripcion: 'Teléfonos móviles y accesorios.',
-      estado: 'Activo',
-      fechaCreacion: '2025-09-20',
-    },
-    {
-      id: 2,
-      categoria: 'Hogar',
-      descripcion: 'Electrodomésticos pequeños.',
-      estado: 'Inactivo',
-      fechaCreacion: '2025-09-25',
-    },
-  ];
+  constructor(private adminDataService: AdminDataService) {}
+
+  ngOnInit(): void {
+    this.cargarCategoriasYSubcategorias();
+  }
+
+  cargarCategoriasYSubcategorias(): void {
+    this.adminDataService.getCategorias().subscribe({
+      next: (categorias) => {
+        this.categorias = categorias;
+        this.cargarSubcategorias();
+      },
+      error: (err) => console.error('Error al cargar categorías:', err)
+    });
+  }
+
+
+  cargarSubcategorias(): void {
+    this.adminDataService.getSubcategorias().subscribe({
+      next: (data) => {
+        this.subcategorias = data;
+
+        // 👇 Para cada subcategoría, obtener su categoría desde la API
+        this.subcategorias.forEach((subcat) => {
+          if (subcat.id_categoria) {
+            this.adminDataService.getCategoriaPorId(subcat.id_categoria._id).subscribe({
+              next: (categoria) => {
+                subcat.categoria = categoria.nombre; // agrega el nombre al objeto
+              },
+              error: (err) => {
+                console.error(`Error al obtener categoría ${subcat.id_categoria}:`, err);
+                subcat.categoria = 'Sin categoría';
+              }
+            });
+          } else {
+            subcat.categoria = 'Sin categoría';
+          }
+        });
+      },
+      error: (err) => {
+        console.error('Error al cargar subcategorías:', err);
+      }
+    });
+  }
+
+
 
 }

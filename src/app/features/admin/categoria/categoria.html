@@ -1,6 +1,5 @@
 <header class="sticky top-0 z-40 bg-white shadow-lg rounded-b-2xl">
   <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-5">
-    <!-- Título con icono -->
     <div class="flex items-center gap-3">
       <mat-icon class="text-[#F7A428] text-4xl drop-shadow-sm">category</mat-icon>
       <h1 class="text-3xl font-extrabold text-gray-800 tracking-wide">
@@ -8,29 +7,9 @@
         <span class="text-gray-600">Subcategorías</span>
       </h1>
     </div>
-
-    <!-- Acciones -->
-    <!-- <div class="flex items-center gap-4">
-      <button
-        mat-raised-button
-        class="flex items-center gap-2 bg-[#F7A428] text-white font-semibold hover:bg-[#e69320] rounded-xl px-5 py-2.5 shadow-md transition-all duration-300"
-      >
-        <mat-icon class="text-white">add</mat-icon>
-        <span>Nueva Categoría</span>
-      </button>
-
-      <button
-        mat-stroked-button
-        class="flex items-center gap-2 border-2 border-[#F7A428] text-[#F7A428] hover:bg-[#FFF5E6] rounded-xl px-5 py-2.5 font-semibold shadow-sm transition-all duration-300"
-      >
-        <mat-icon class="text-[#F7A428]">add_circle_outline</mat-icon>
-        <span>Nueva Subcategoría</span>
-      </button>
-    </div> -->
   </div>
 </header>
 
-<!-- 🔹 Switch entre Categorías y Subcategorías -->
 <div class="max-w-7xl mx-auto px-6 mt-6">
   <div class="flex justify-center gap-6">
     <button
@@ -58,9 +37,7 @@
     </button>
   </div>
 
-  <!-- 🔸 Contenido dinámico -->
   <div class="mt-10">
-    <!-- 📘 Tabla de Categorías -->
     <div *ngIf="activeTab === 'categorias'">
       <div class="flex justify-between items-center mb-6">
         <h2 class="text-2xl font-bold text-gray-800">Lista de Categorías</h2>
@@ -90,7 +67,7 @@
             *ngFor="let categoria of categorias"
             class="hover:bg-gray-50 transition-all"
           >
-            <td class="px-6 py-3 border-b">{{ categoria.id }}</td>
+            <td class="px-6 py-3 border-b">{{ categoria._id }}</td>
             <td class="px-6 py-3 border-b">{{ categoria.nombre }}</td>
             <td class="px-6 py-3 border-b">{{ categoria.tipo }}</td>
             <td class="px-6 py-3 border-b">{{ categoria.descripcion }}</td>
@@ -98,14 +75,14 @@
               <span
                 class="px-3 py-1 rounded-full text-sm font-medium"
                 [ngClass]="{
-                  'bg-green-100 text-green-700': categoria.estado === 'Activo',
-                  'bg-red-100 text-red-700': categoria.estado === 'Inactivo'
+                  'bg-green-100 text-green-700': categoria.estado === 'activo',
+                  'bg-red-100 text-red-700': categoria.estado === 'inactivo'
                 }"
               >
                 {{ categoria.estado }}
               </span>
             </td>
-            <td class="px-6 py-3 border-b">{{ categoria.fechaCreacion }}</td>
+            <td class="px-6 py-3 border-b">{{ categoria.createdAt | date:'shortDate' }}</td>
             <td class="px-6 py-3 text-center border-b">
               <button
                 mat-icon-button
@@ -127,7 +104,6 @@
       </table>
     </div>
 
-    <!-- 📗 Tabla de Subcategorías -->
     <div *ngIf="activeTab === 'subcategorias'">
       <div class="flex justify-between items-center mb-6">
         <h2 class="text-2xl font-bold text-gray-800">Lista de Subcategorías</h2>
@@ -156,21 +132,22 @@
             *ngFor="let subcategoria of subcategorias"
             class="hover:bg-gray-50 transition-all"
           >
-            <td class="px-6 py-3 border-b">{{ subcategoria.id }}</td>
-            <td class="px-6 py-3 border-b">{{ subcategoria.categoria }}</td>
-            <td class="px-6 py-3 border-b">{{ subcategoria.descripcion }}</td>
+            <td class="px-6 py-3 border-b">{{ subcategoria._id }}</td>
+    <td class="px-6 py-3 border-b">
+      {{ subcategoria.categoria || 'Cargando...' }}
+    </td>            <td class="px-6 py-3 border-b">{{ subcategoria.descripcion }}</td>
             <td class="px-6 py-3 border-b">
               <span
                 class="px-3 py-1 rounded-full text-sm font-medium"
                 [ngClass]="{
-                  'bg-green-100 text-green-700': subcategoria.estado === 'Activo',
-                  'bg-red-100 text-red-700': subcategoria.estado === 'Inactivo'
+                  'bg-green-100 text-green-700': subcategoria.estado === 'activo',
+                  'bg-red-100 text-red-700': subcategoria.estado === 'inactivo'
                 }"
               >
                 {{ subcategoria.estado }}
               </span>
             </td>
-            <td class="px-6 py-3 border-b">{{ subcategoria.fechaCreacion }}</td>
+            <td class="px-6 py-3 border-b">{{ subcategoria.createdAt | date:'shortDate' }}</td>
             <td class="px-6 py-3 text-center border-b">
               <button
                 mat-icon-button
