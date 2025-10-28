@@ -37,12 +37,11 @@ export class Categoria {
       next: (data) => {
         this.subcategorias = data;
 
-        // 👇 Para cada subcategoría, obtener su categoría desde la API
         this.subcategorias.forEach((subcat) => {
           if (subcat.id_categoria) {
             this.adminDataService.getCategoriaPorId(subcat.id_categoria._id).subscribe({
               next: (categoria) => {
-                subcat.categoria = categoria.nombre; // agrega el nombre al objeto
+                subcat.categoria = categoria.nombre;
               },
               error: (err) => {
                 console.error(`Error al obtener categoría ${subcat.id_categoria}:`, err);
