@@ -1,6 +1,5 @@
 <header class="sticky top-0 z-40 bg-white shadow-lg rounded-b-2xl">
   <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-5">
-    
     <!-- Título con icono -->
     <div class="flex items-center gap-3">
       <mat-icon class="text-[#F7A428] text-4xl drop-shadow-sm">category</mat-icon>
@@ -11,18 +10,186 @@
     </div>
 
     <!-- Acciones -->
-    <div class="flex items-center gap-4">
-      <!-- Botón Categoría -->
-      <button mat-raised-button class="flex items-center gap-2 bg-[#F7A428] text-white font-semibold hover:bg-[#e69320] rounded-xl px-5 py-2.5 shadow-md transition-all duration-300">
+    <!-- <div class="flex items-center gap-4">
+      <button
+        mat-raised-button
+        class="flex items-center gap-2 bg-[#F7A428] text-white font-semibold hover:bg-[#e69320] rounded-xl px-5 py-2.5 shadow-md transition-all duration-300"
+      >
         <mat-icon class="text-white">add</mat-icon>
         <span>Nueva Categoría</span>
       </button>
 
-      <!-- Botón Subcategoría -->
-      <button mat-stroked-button class="flex items-center gap-2 border-2 border-[#F7A428] text-[#F7A428] hover:bg-[#FFF5E6] rounded-xl px-5 py-2.5 font-semibold shadow-sm transition-all duration-300">
+      <button
+        mat-stroked-button
+        class="flex items-center gap-2 border-2 border-[#F7A428] text-[#F7A428] hover:bg-[#FFF5E6] rounded-xl px-5 py-2.5 font-semibold shadow-sm transition-all duration-300"
+      >
         <mat-icon class="text-[#F7A428]">add_circle_outline</mat-icon>
         <span>Nueva Subcategoría</span>
       </button>
-    </div>
+    </div> -->
   </div>
 </header>
+
+<!-- 🔹 Switch entre Categorías y Subcategorías -->
+<div class="max-w-7xl mx-auto px-6 mt-6">
+  <div class="flex justify-center gap-6">
+    <button
+      (click)="activeTab = 'categorias'"
+      [ngClass]="{
+        'bg-[#F7A428] text-white shadow-md': activeTab === 'categorias',
+        'bg-white text-gray-700 border border-gray-300 hover:bg-gray-100':
+          activeTab !== 'categorias'
+      }"
+      class="px-6 py-2 rounded-xl font-semibold transition-all duration-300"
+    >
+      Categorías
+    </button>
+
+    <button
+      (click)="activeTab = 'subcategorias'"
+      [ngClass]="{
+        'bg-[#F7A428] text-white shadow-md': activeTab === 'subcategorias',
+        'bg-white text-gray-700 border border-gray-300 hover:bg-gray-100':
+          activeTab !== 'subcategorias'
+      }"
+      class="px-6 py-2 rounded-xl font-semibold transition-all duration-300"
+    >
+      Subcategorías
+    </button>
+  </div>
+
+  <!-- 🔸 Contenido dinámico -->
+  <div class="mt-10">
+    <!-- 📘 Tabla de Categorías -->
+    <div *ngIf="activeTab === 'categorias'">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-bold text-gray-800">Lista de Categorías</h2>
+        <button
+          mat-raised-button
+          class="flex items-center gap-2 bg-[#F7A428] text-white hover:bg-[#e69320] rounded-xl px-5 py-2 font-semibold shadow-md transition-all duration-300"
+        >
+          <mat-icon class="text-white">add</mat-icon>
+          Nueva Categoría
+        </button>
+      </div>
+
+      <table class="min-w-full bg-white border border-gray-300 rounded-xl shadow-sm overflow-hidden">
+        <thead class="bg-[#FFF5E6] text-gray-700 uppercase text-sm font-semibold">
+          <tr>
+            <th class="px-6 py-3 text-left border-b">ID</th>
+            <th class="px-6 py-3 text-left border-b">Nombre</th>
+            <th class="px-6 py-3 text-left border-b">Tipo</th>
+            <th class="px-6 py-3 text-left border-b">Descripción</th>
+            <th class="px-6 py-3 text-left border-b">Estado</th>
+            <th class="px-6 py-3 text-left border-b">Fecha de Creación</th>
+            <th class="px-6 py-3 text-center border-b">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let categoria of categorias"
+            class="hover:bg-gray-50 transition-all"
+          >
+            <td class="px-6 py-3 border-b">{{ categoria.id }}</td>
+            <td class="px-6 py-3 border-b">{{ categoria.nombre }}</td>
+            <td class="px-6 py-3 border-b">{{ categoria.tipo }}</td>
+            <td class="px-6 py-3 border-b">{{ categoria.descripcion }}</td>
+            <td class="px-6 py-3 border-b">
+              <span
+                class="px-3 py-1 rounded-full text-sm font-medium"
+                [ngClass]="{
+                  'bg-green-100 text-green-700': categoria.estado === 'Activo',
+                  'bg-red-100 text-red-700': categoria.estado === 'Inactivo'
+                }"
+              >
+                {{ categoria.estado }}
+              </span>
+            </td>
+            <td class="px-6 py-3 border-b">{{ categoria.fechaCreacion }}</td>
+            <td class="px-6 py-3 text-center border-b">
+              <button
+                mat-icon-button
+                color="primary"
+                class="hover:text-[#F7A428]"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                color="warn"
+                class="hover:text-red-600"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 📗 Tabla de Subcategorías -->
+    <div *ngIf="activeTab === 'subcategorias'">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-bold text-gray-800">Lista de Subcategorías</h2>
+        <button
+          mat-raised-button
+          class="flex items-center gap-2 bg-[#F7A428] text-white hover:bg-[#e69320] rounded-xl px-5 py-2 font-semibold shadow-md transition-all duration-300"
+        >
+          <mat-icon class="text-white">add</mat-icon>
+          Nueva Subcategoría
+        </button>
+      </div>
+
+      <table class="min-w-full bg-white border border-gray-300 rounded-xl shadow-sm overflow-hidden">
+        <thead class="bg-[#FFF5E6] text-gray-700 uppercase text-sm font-semibold">
+          <tr>
+            <th class="px-6 py-3 text-left border-b">ID</th>
+            <th class="px-6 py-3 text-left border-b">Categoría</th>
+            <th class="px-6 py-3 text-left border-b">Descripción</th>
+            <th class="px-6 py-3 text-left border-b">Estado</th>
+            <th class="px-6 py-3 text-left border-b">Fecha de Creación</th>
+            <th class="px-6 py-3 text-center border-b">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let subcategoria of subcategorias"
+            class="hover:bg-gray-50 transition-all"
+          >
+            <td class="px-6 py-3 border-b">{{ subcategoria.id }}</td>
+            <td class="px-6 py-3 border-b">{{ subcategoria.categoria }}</td>
+            <td class="px-6 py-3 border-b">{{ subcategoria.descripcion }}</td>
+            <td class="px-6 py-3 border-b">
+              <span
+                class="px-3 py-1 rounded-full text-sm font-medium"
+                [ngClass]="{
+                  'bg-green-100 text-green-700': subcategoria.estado === 'Activo',
+                  'bg-red-100 text-red-700': subcategoria.estado === 'Inactivo'
+                }"
+              >
+                {{ subcategoria.estado }}
+              </span>
+            </td>
+            <td class="px-6 py-3 border-b">{{ subcategoria.fechaCreacion }}</td>
+            <td class="px-6 py-3 text-center border-b">
+              <button
+                mat-icon-button
+                color="primary"
+                class="hover:text-[#F7A428]"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                color="warn"
+                class="hover:text-red-600"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
