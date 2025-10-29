@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
+import { MatDialog } from '@angular/material/dialog';
 import { AdminDataService } from '../../../core/services/admin.data.service';
+import { AgregarCategoria } from './modales/agregar-categoria/agregar-categoria';
 
 @Component({
   selector: 'app-categoria',
@@ -15,7 +17,7 @@ export class Categoria {
   categorias: any[] = [];
   subcategorias: any[] = [];
 
-  constructor(private adminDataService: AdminDataService) {}
+  constructor(private adminDataService: AdminDataService, private dialog : MatDialog) {}
 
   ngOnInit(): void {
     this.cargarCategoriasYSubcategorias();
@@ -58,6 +60,47 @@ export class Categoria {
       }
     });
   }
+
+abrirModalCategoria(): void {
+  const dialogRef = this.dialog.open(AgregarCategoria, {
+    width: '500px',
+  });
+
+  dialogRef.afterClosed().subscribe((resultado) => {
+    if (resultado === true) {
+      this.cargarCategoriasYSubcategorias();
+    }
+  });
+}
+
+eliminarCategoria(id: string): void {
+  if (confirm('¿Seguro que deseas eliminar esta categoría?')) {
+    this.adminDataService.deleteCategoria(id).subscribe({
+      next: (res) => {
+        console.log('Categoría eliminada correctamente:', res);
+        this.cargarCategoriasYSubcategorias();
+      },
+      error: (err) => {
+        console.error('Error al eliminar la categoría:', err);
+      }
+    });
+  }
+}
+
+editarCategoria(categoria: any): void {
+  const dialogRef = this.dialog.open(AgregarCategoria, {
+    width: '500px',
+    data: { categoria } 
+  });
+
+  dialogRef.afterClosed().subscribe((resultado) => {
+    if (resultado === true) {
+      this.cargarCategoriasYSubcategorias();
+    }
+  });
+}
+
+
 
 
 
