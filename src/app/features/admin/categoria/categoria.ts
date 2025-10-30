@@ -4,6 +4,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { AdminDataService } from '../../../core/services/admin.data.service';
 import { AgregarCategoria } from './modales/agregar-categoria/agregar-categoria';
+import { AgregarSubcategoria } from './modales/agregar-subcategoria/agregar-subcategoria';
 
 @Component({
   selector: 'app-categoria',
@@ -12,12 +13,12 @@ import { AgregarCategoria } from './modales/agregar-categoria/agregar-categoria'
   styleUrl: './categoria.css'
 })
 export class Categoria {
-   activeTab: 'categorias' | 'subcategorias' = 'categorias';
+  activeTab: 'categorias' | 'subcategorias' = 'categorias';
 
   categorias: any[] = [];
   subcategorias: any[] = [];
 
-  constructor(private adminDataService: AdminDataService, private dialog : MatDialog) {}
+  constructor(private adminDataService: AdminDataService, private dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.cargarCategoriasYSubcategorias();
@@ -32,7 +33,6 @@ export class Categoria {
       error: (err) => console.error('Error al cargar categorías:', err)
     });
   }
-
 
   cargarSubcategorias(): void {
     this.adminDataService.getSubcategorias().subscribe({
@@ -61,47 +61,82 @@ export class Categoria {
     });
   }
 
-abrirModalCategoria(): void {
-  const dialogRef = this.dialog.open(AgregarCategoria, {
-    width: '500px',
-  });
+  abrirModalCategoria(): void {
+    const dialogRef = this.dialog.open(AgregarCategoria, {
+      width: '500px',
+    });
 
-  dialogRef.afterClosed().subscribe((resultado) => {
-    if (resultado === true) {
-      this.cargarCategoriasYSubcategorias();
-    }
-  });
-}
-
-eliminarCategoria(id: string): void {
-  if (confirm('¿Seguro que deseas eliminar esta categoría?')) {
-    this.adminDataService.deleteCategoria(id).subscribe({
-      next: (res) => {
-        console.log('Categoría eliminada correctamente:', res);
+    dialogRef.afterClosed().subscribe((resultado) => {
+      if (resultado === true) {
         this.cargarCategoriasYSubcategorias();
-      },
-      error: (err) => {
-        console.error('Error al eliminar la categoría:', err);
       }
     });
   }
-}
 
-editarCategoria(categoria: any): void {
-  const dialogRef = this.dialog.open(AgregarCategoria, {
-    width: '500px',
-    data: { categoria } 
-  });
-
-  dialogRef.afterClosed().subscribe((resultado) => {
-    if (resultado === true) {
-      this.cargarCategoriasYSubcategorias();
+  eliminarCategoria(id: string): void {
+    if (confirm('¿Seguro que deseas eliminar esta categoría?')) {
+      this.adminDataService.deleteCategoria(id).subscribe({
+        next: (res) => {
+          console.log('Categoría eliminada correctamente:', res);
+          this.cargarCategoriasYSubcategorias();
+        },
+        error: (err) => {
+          console.error('Error al eliminar la categoría:', err);
+        }
+      });
     }
-  });
-}
+  }
 
+  editarCategoria(categoria: any): void {
+    const dialogRef = this.dialog.open(AgregarCategoria, {
+      width: '500px',
+      data: { categoria }
+    });
 
+    dialogRef.afterClosed().subscribe((resultado) => {
+      if (resultado === true) {
+        this.cargarCategoriasYSubcategorias();
+      }
+    });
+  }
 
+  abrirModalSubcategoria(): void {
+    const dialogRef = this.dialog.open(AgregarSubcategoria, {
+      width: '500px',
+      data: { categorias: this.categorias } 
+    });
 
+    dialogRef.afterClosed().subscribe((resultado) => {
+      if (resultado === true) {
+        this.cargarCategoriasYSubcategorias();
+      }
+    });
+  }
 
+  eliminarSubcategoria(id: string): void {
+    if (confirm('¿Seguro que deseas eliminar esta subcategoría?')) {
+      this.adminDataService.deleteSubcategoria(id).subscribe({
+        next: (res) => {
+          console.log('Subcategoría eliminada correctamente:', res);
+          this.cargarCategoriasYSubcategorias();
+        },
+        error: (err) => {
+          console.error('Error al eliminar la subcategoría:', err);
+        }
+      });
+    }
+  }
+
+  editarSubcategoria(subcategoria: any): void {
+    const dialogRef = this.dialog.open(AgregarSubcategoria, {
+      width: '500px',
+      data: { subcategoria, categorias: this.categorias }
+    });
+
+    dialogRef.afterClosed().subscribe((resultado) => {
+      if (resultado === true) {
+        this.cargarCategoriasYSubcategorias();
+      }
+    });
+  }
 }

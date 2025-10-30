@@ -22,6 +22,9 @@ export class AdminDataService {
   getSubcategorias(): Observable<any[]> {
     return this.http.get<any[]>(`${environment.apiUrl}subcategorias`)
   }
+    getSubcategoriasPorCategoria(idCategoria: string): Observable<any> {
+    return this.http.get(`${environment.apiUrl}subcategorias/categoria/${idCategoria}`);
+  }
   addCategoria(categoria: any): Observable<any> {
     return this.http.post<any>(`${environment.apiUrl}categorias`, categoria);
   }
@@ -31,9 +34,22 @@ export class AdminDataService {
   updateCategoria(id: string, categoria: any): Observable<any> {
     return this.http.put<any>(`${environment.apiUrl}categorias/${id}`, categoria);
   }
+  addSubcategoria(subcategoria: any): Observable<any> {
+    return this.http.post<any>(`${environment.apiUrl}subcategorias`, subcategoria);
+  }
+  updateSubcategoria(id: string, subcategoria: any): Observable<any> {
+    return this.http.put<any>(`${environment.apiUrl}subcategorias/${id}`, subcategoria);
+  }
+  deleteSubcategoria(id: string): Observable<any> {
+    return this.http.delete<any>(`${environment.apiUrl}subcategorias/${id}`);
+  }
 
-
-
-
+  
+  addTaller(tallerData: any): Observable<any> {
+    return this.http.post(`${environment.apiUrl}talleres`, tallerData);
+  }
+  updateTaller(idTaller: string, tallerData: any): Observable<any> {
+    return this.http.patch(`${environment.apiUrl}talleres/${idTaller}`, tallerData);
+  }
 
 }
