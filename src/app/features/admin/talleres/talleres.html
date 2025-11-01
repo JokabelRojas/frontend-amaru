@@ -7,78 +7,144 @@
       </h1>
     </div>
     <button
-  mat-raised-button
-    (click)="openAgregarTaller()"
-  class="flex items-center gap-2 bg-[#F7A428] text-white hover:bg-[#e69320] rounded-xl px-5 py-2 font-semibold shadow-md transition-all duration-300"
->
-  <mat-icon class="text-white">add</mat-icon>
-  Nuevo Taller
-</button>
+      mat-raised-button
+      (click)="openAgregarTaller()"
+      class="flex items-center gap-2 bg-[#F7A428] text-white hover:bg-[#e69320] rounded-xl px-5 py-2 font-semibold shadow-md transition-all duration-300"
+    >
+      <mat-icon class="text-white">add</mat-icon>
+      Nuevo Taller
+    </button>
   </div>
 </header>
 
-<!-- 🔽 Filtros debajo del header -->
-<section class="bg-white shadow-md rounded-2xl  mt-4 p-5 border border-gray-200">
-  <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+<!-- 🔽 FILTROS -->
+<section class="bg-white shadow-md rounded-2xl mt-4 p-5 border border-gray-200">
+  <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
 
     <!-- 🟠 Categoría -->
     <div>
-      <label for="categoria" class="block text-sm font-medium text-gray-700 mb-1">
-        Categoría
-      </label>
+      <label for="categoria" class="block text-sm font-medium text-gray-700 mb-1">Categoría</label>
       <select
         id="categoria"
         name="categoria"
+        [(ngModel)]="filtros.id_categoria"
+        (change)="onCategoriaChange()"
         class="block w-full border-gray-300 rounded-md shadow-sm focus:border-[#F7A428] focus:ring focus:ring-[#F7A428]/50 p-2 bg-white"
       >
         <option value="">Seleccione una categoría</option>
-        <!-- Opciones se llenarán dinámicamente -->
+        <option *ngFor="let cat of categorias" [value]="cat._id">{{ cat.nombre }}</option>
       </select>
     </div>
 
     <!-- 🟠 Subcategoría -->
     <div>
-      <label for="subcategoria" class="block text-sm font-medium text-gray-700 mb-1">
-        Subcategoría
-      </label>
+      <label for="subcategoria" class="block text-sm font-medium text-gray-700 mb-1">Subcategoría</label>
       <select
         id="subcategoria"
         name="subcategoria"
+        [(ngModel)]="filtros.id_subcategoria"
         class="block w-full border-gray-300 rounded-md shadow-sm focus:border-[#F7A428] focus:ring focus:ring-[#F7A428]/50 p-2 bg-white"
       >
         <option value="">Seleccione una subcategoría</option>
+        <option *ngFor="let sub of subcategorias" [value]="sub._id">{{ sub.nombre }}</option>
       </select>
     </div>
 
     <!-- 🟠 Estado -->
     <div>
-      <label for="estado" class="block text-sm font-medium text-gray-700 mb-1">
-        Estado
-      </label>
+      <label for="estado" class="block text-sm font-medium text-gray-700 mb-1">Estado</label>
       <select
         id="estado"
         name="estado"
+        [(ngModel)]="filtros.estado"
         class="block w-full border-gray-300 rounded-md shadow-sm focus:border-[#F7A428] focus:ring focus:ring-[#F7A428]/50 p-2 bg-white"
       >
-        <option value="">Todos los estados</option>
-        <!-- Ejemplo de opciones temporales -->
+        <option value="">Todos</option>
         <option value="activo">Activo</option>
         <option value="inactivo">Inactivo</option>
       </select>
     </div>
 
-    <!-- 🗓 Fecha -->
+    <!-- 🗓 Fecha Inicio -->
     <div>
-      <label for="fecha" class="block text-sm font-medium text-gray-700 mb-1">
-        Fecha
-      </label>
+      <label for="fechaInicio" class="block text-sm font-medium text-gray-700 mb-1">Fecha Inicio</label>
       <input
         type="date"
-        id="fecha"
-        name="fecha"
+        id="fechaInicio"
+        [(ngModel)]="filtros.fecha_inicio"
         class="block w-full border-gray-300 rounded-md shadow-sm focus:border-[#F7A428] focus:ring focus:ring-[#F7A428]/50 p-2 bg-white"
       />
     </div>
 
+    <!-- 🗓 Fecha Fin -->
+    <div>
+      <label for="fechaFin" class="block text-sm font-medium text-gray-700 mb-1">Fecha Fin</label>
+      <input
+        type="date"
+        id="fechaFin"
+        [(ngModel)]="filtros.fecha_fin"
+        class="block w-full border-gray-300 rounded-md shadow-sm focus:border-[#F7A428] focus:ring focus:ring-[#F7A428]/50 p-2 bg-white"
+      />
+    </div>
+
+  </div>
+
+  <div class="flex justify-end mt-4">
+    <button
+      class="bg-[#F7A428] hover:bg-[#e69320] text-white px-6 py-2 rounded-lg font-semibold shadow-md transition-all"
+      (click)="cargarTalleres()"
+    >
+      <mat-icon class="text-white align-middle mr-1">search</mat-icon>
+      Filtrar
+    </button>
+  </div>
+</section>
+
+<!-- 🟣 Cards de Talleres -->
+<!-- ... código anterior del header y filtros ... -->
+
+<!-- 🟣 Cards de Talleres -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+  <div
+    *ngFor="let taller of talleres"
+    class="bg-white rounded-2xl shadow-md overflow-hidden border border-gray-200 hover:shadow-xl transition-all"
+  >
+    <img
+      [src]="taller.imagen_url || 'https://via.placeholder.com/400x200?text=Sin+imagen'"
+      alt="{{ taller.nombre }}"
+      class="w-full h-48 object-cover"
+    />
+
+    <div class="p-4 space-y-2">
+      <h2 class="text-lg font-bold text-gray-800">{{ taller.nombre }}</h2>
+      <p class="text-gray-600 text-sm">{{ taller.descripcion }}</p>
+
+      <p class="text-sm text-gray-700"><strong>Horario:</strong> {{ taller.horario }}</p>
+
+      <div class="flex justify-between text-sm text-gray-700">
+        <span><strong>Inicio:</strong> {{ taller.fecha_inicio | date:'yyyy-MM-dd' }}</span>
+        <span><strong>Fin:</strong> {{ taller.fecha_fin | date:'yyyy-MM-dd' }}</span>
+      </div>
+
+      <hr class="my-3 border-gray-300" />
+
+      <div class="flex justify-between items-center">
+        <span class="text-lg font-semibold text-[#F7A428]">S/ {{ taller.precio }}</span>
+        <div class="flex gap-2">
+          <button
+            class="px-3 py-1 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
+            (click)="editarTaller(taller)"
+          >
+            <mat-icon class="text-sm">edit</mat-icon>
+          </button>
+          <button
+            class="px-3 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
+            (click)="eliminarTaller(taller._id)"
+          >
+            <mat-icon class="text-sm">delete</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </section>

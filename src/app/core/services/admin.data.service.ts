@@ -44,12 +44,58 @@ export class AdminDataService {
     return this.http.delete<any>(`${environment.apiUrl}subcategorias/${id}`);
   }
 
+getTalleresFiltrados(filtros: {
+  id_categoria?: string;
+  id_subcategoria?: string;
+  estado?: string;
+  fecha_inicio?: string;
+  fecha_fin?: string;
+}): Observable<any[]> {
+  const params: any = {};
+
+  if (filtros.id_categoria) params.id_categoria = filtros.id_categoria;
+  if (filtros.id_subcategoria) params.id_subcategoria = filtros.id_subcategoria;
+  if (filtros.estado) params.estado = filtros.estado;
+  if (filtros.fecha_inicio) params.fecha_inicio = filtros.fecha_inicio;
+  if (filtros.fecha_fin) params.fecha_fin = filtros.fecha_fin;
+
+  return this.http.get<any[]>(`${environment.apiUrl}talleres/filtrar/talleres`, { params });
+}
+
   
   addTaller(tallerData: any): Observable<any> {
     return this.http.post(`${environment.apiUrl}talleres`, tallerData);
   }
   updateTaller(idTaller: string, tallerData: any): Observable<any> {
     return this.http.patch(`${environment.apiUrl}talleres/${idTaller}`, tallerData);
+  }
+
+  deleteTaller(idTaller: string): Observable<any> {
+    return this.http.delete(`${environment.apiUrl}talleres/${idTaller}`);
+  }
+
+  getServiciosFiltrados(filtros: {
+  id_categoria?: string;
+  id_subcategoria?: string;
+
+}): Observable<any[]> {
+  const params: any = {};
+
+  if (filtros.id_categoria) params.id_categoria = filtros.id_categoria;
+  if (filtros.id_subcategoria) params.id_subcategoria = filtros.id_subcategoria;
+
+
+  return this.http.get<any[]>(`${environment.apiUrl}servicios/filtrar/servicios`, { params });
+}
+
+addServicio(servicioData: any): Observable<any> {
+    return this.http.post(`${environment.apiUrl}servicios`, servicioData);  
+  }
+  updateServicio(idServicio: string, servicioData: any): Observable<any> {
+    return this.http.patch(`${environment.apiUrl}servicios/${idServicio}`, servicioData);
+  }
+  deleteServicio(idServicio: string): Observable<any> {
+    return this.http.delete(`${environment.apiUrl}servicios/${idServicio}`);
   }
 
 }
