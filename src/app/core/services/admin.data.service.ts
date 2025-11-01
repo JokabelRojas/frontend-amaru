@@ -98,4 +98,16 @@ addServicio(servicioData: any): Observable<any> {
     return this.http.delete(`${environment.apiUrl}servicios/${idServicio}`);
   }
 
+  getInscripciones(): Observable<any[]> {
+    return this.http.get<any[]>(`${environment.apiUrl}inscripciones`);
+  }
+
+  getDetalleInscripciones(): Observable<any[]> {
+    return this.http.get<any[]>(`${environment.apiUrl}detalle-inscripciones`);
+  }
+
+  cambiarEstadoInscripcion(id: string, estado: string): Observable<any> {
+  return this.http.patch<any>(`${environment.apiUrl}inscripciones/${id}/estado`, { estado });
+}
+
 }
